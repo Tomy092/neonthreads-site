@@ -1,0 +1,126 @@
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #fff;
+  padding: 40px;
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 30px;
+}
+
+.customizer {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+/* PREVIEW */
+.preview {
+  width: 320px;
+}
+
+.tshirt {
+  position: relative;
+  width: 100%;
+}
+
+.tshirt-base {
+  width: 100%;
+}
+
+.draggable {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: grab;
+}
+
+#logo {
+  max-width: 120px;
+}
+
+#text {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.hidden {
+  display: none;
+}
+
+/* CONTROLLI */
+.controls {
+  width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.controls input, button {
+  padding: 8px;
+  font-size: 14px;
+}
+
+button {
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+/* =========================
+   MOBILE FIRST ADAPTATION
+========================= */
+
+@media (max-width: 768px) {
+
+  body {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  .customizer {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .preview {
+    width: 90vw;
+    max-width: 340px;
+  }
+
+  .controls {
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .controls label {
+    text-align: left;
+    font-size: 14px;
+  }
+
+  .controls input,
+  .controls button {
+    font-size: 16px;
+    padding: 12px;
+  }
+
+  button {
+    border-radius: 10px;
+  }
+
+  #logo {
+    max-width: 140px;
+  }
+
+  #text {
+    font-size: 22px;
+  }
+}

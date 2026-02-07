@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Personalizza la tua maglietta</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="customize.css">
+</head>
+<body>
+
+<h1>Personalizza la tua maglietta</h1>
+
+<div class="customizer">
+
+  <!-- AREA PREVIEW -->
+  <div class="preview">
+    <div class="tshirt" id="tshirt">
+      <img src="img/tshirt-base.png" class="tshirt-base">
+
+      <img id="logo" class="draggable hidden">
+      <div id="text" class="draggable hidden">TESTO</div>
+    </div>
+  </div>
+
+  <!-- CONTROLLI -->
+  <div class="controls">
+
+    <label>Colore maglietta</label>
+    <input type="color" id="shirtColor" value="#ffffff">
+
+    <label>Carica logo</label>
+    <input type="file" id="upload" accept="image/*">
+
+    <label>Testo personalizzato</label>
+    <input type="text" id="textInput" placeholder="Scrivi qui">
+
+    <label>Colore testo</label>
+    <input type="color" id="textColor" value="#000000">
+
+    <button id="center">Centra elementi</button>
+
+  </div>
+
+</div>
+
+<script src="customize.js"></script>
+</body>
+</html>
