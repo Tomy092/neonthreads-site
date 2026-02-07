@@ -1,50 +1,78 @@
 const canvas = document.getElementById("shirtCanvas");
 const ctx = canvas.getContext("2d");
 
-/* DIMENSIONI CANVAS */
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+/* =========================
+   DEVICE & CANVAS SETUP
+========================= */
 
-/* IMMAGINI MAGLIETTE */
+const isMobile = window.innerWidth < 768;
+const SHIRT_COUNT = isMobile ? 8 : 15;
+
+function resizeCanvas() {
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = window.innerWidth * dpr;
+  canvas.height = window.innerHeight * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+resizeCanvas();
+
+/* =========================
+   IMMAGINI MAGLIETTE
+========================= */
+
 const shirtSources = [
   "customize/immagini/shirt/tshirt-(2).png",
   "customize/immagini/shirt/tshirt-(3).png",
   "customize/immagini/shirt/tshirt-(4).png",
   "customize/immagini/shirt/tshirt-(5).png",
   "customize/immagini/shirt/tshirt-(6).png",
-  "customize/immagini/shirt/tshirt-(7).png",
+  "customize/immagini/shirt/tshirt-(7).png"
 ];
 
-const shirtImages = [];
-
-/* PRELOAD IMMAGINI */
-shirtSources.forEach(src => {
+const shirtImages = shirtSources.map(src => {
   const img = new Image();
   img.src = src;
-  shirtImages.push(img);
+  return img;
 });
 
-/* OGGETTI ANIMATI */
+/* =========================
+   OGGETTI ANIMATI
+========================= */
+
 const shirts = [];
 
-for (let i = 0; i < 15; i++) {
-  const img =
-    shirtImages[Math.floor(Math.random() * shirtImages.length)];
+function createShirts() {
+  shirts.length = 0;
 
-  shirts.push({
-    img: img,
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    width: 70 + Math.random() * 40,
-    speed: 0.4 + Math.random() * 0.8
-  });
+  const baseSize = isMobile ? 55 : 80;
+
+  for (let i = 0; i < SHIRT_COUNT; i++) {
+    const img =
+      shirtImages[Math.floor(Math.random() * shirtImages.length)];
+
+    shirts.push({
+      img,
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      width: baseSize + Math.random() * 30,
+      speed: isMobile
+        ? 0.3 + Math.random() * 0.5
+        : 0.4 + Math.random() * 0.8
+    });
+  }
 }
 
-/* LOOP ANIMAZIONE */
+/* =========================
+   LOOP ANIMAZIONE
+========================= */
+
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   shirts.forEach(s => {
+    if (!s.img.complete) return;
+
     ctx.drawImage(
       s.img,
       s.x,
@@ -55,21 +83,33 @@ function draw() {
 
     s.y += s.speed;
 
-    if (s.y > canvas.height + 120) {
-      s.y = -150;
-      s.x = Math.random() * canvas.width;
+    if (s.y > window.innerHeight + 150) {
+      s.y = -200;
+      s.x = Math.random() * window.innerWidth;
     }
   });
 
   requestAnimationFrame(draw);
 }
 
-/* START */
-draw();
+/* =========================
+   START DOPO LOAD IMMAGINI
+========================= */
 
-/* RESIZE RESPONSIVE */
-window.addEventListener("resize", () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+Promise.all(
+  shirtImages.map(img => new Promise(resolve => {
+    img.onload = resolve;
+  }))
+).then(() => {
+  createShirts();
+  draw();
 });
 
+/* =========================
+   RESIZE & ORIENTATION
+========================= */
+
+window.addEventListener("resize", () => {
+  resizeCanvas();
+  createShirts();
+});
