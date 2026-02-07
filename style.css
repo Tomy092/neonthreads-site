@@ -165,12 +165,13 @@ body {
 
 @media (max-width: 768px) {
   .btn-secondary {
-    width: 90%;
-    max-width: 320px;
-    font-size: 16px;
-    padding: 14px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
 }
+
 
 #shirtCanvas {
   position: absolute;
@@ -179,4 +180,63 @@ body {
   width: 100%;
   height: 100%;
   pointer-events: none; /* non blocca tap */
+}
+
+/* ===== HAMBURGER BASE ===== */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background: #111;
+  border-radius: 2px;
+}
+
+/* ===== MOBILE MENU ===== */
+@media (max-width: 768px) {
+
+  .hamburger {
+    display: flex;
+  }
+
+  .navbar nav {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 30px 0;
+
+    transform: translateY(-20px);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+  }
+
+  .navbar nav.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .steps {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .step {
+    width: 100%;
+    max-width: 320px;
+  }
 }
