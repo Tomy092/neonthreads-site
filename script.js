@@ -2,12 +2,19 @@ const canvas = document.getElementById("shirtCanvas");
 const ctx = canvas.getContext("2d");
 
 /* =========================
-   MOBILE DETECTION
+   SAFETY CHECK
 ========================= */
-const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+if (!canvas || !ctx) {
+  console.error("Canvas non trovato");
+}
 
 /* =========================
-   CANVAS SETUP (SAFE)
+   DEVICE DETECTION (ROBUSTA)
+========================= */
+const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+/* =========================
+   CANVAS SETUP
 ========================= */
 function resizeCanvas() {
   canvas.width = window.innerWidth;
@@ -25,7 +32,7 @@ const shirtSources = [
   "customize/immagini/shirt/tshirt-(4).png",
   "customize/immagini/shirt/tshirt-(5).png",
   "customize/immagini/shirt/tshirt-(6).png",
-  "customize/immagini/shirt/tshirt-(7).png"
+  "customize/immagini/shirt/tshirt-(7).png",
 ];
 
 const shirtImages = shirtSources.map(src => {
@@ -38,35 +45,49 @@ const shirtImages = shirtSources.map(src => {
    OGGETTI ANIMATI
 ========================= */
 const shirts = [];
-const SHIRT_COUNT = isMobile ? 5 : 12;
+let SHIRT_COUNT = isMobile ? 5 : 12;
 
 function createShirts() {
   shirts.length = 0;
+  SHIRT_COUNT = window.matchMedia("(max-width: 768px)").matches ? 5 : 12;
 
   for (let i = 0; i < SHIRT_COUNT; i++) {
-    const img =
-      shirtImages[Math.floor(Math.random() * shirtImages.length)];
+    const img = shirtImages[Math.floor(Math.random() * shirtImages.length)];
 
     shirts.push({
       img,
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
-      size: isMobile ? 55 : 80,
-      speed: isMobile ? 0.25 + Math.random() * 0.4 : 0.5 + Math.random()
+      size: SHIRT_COUNT === 5 ? 55 : 80,
+      speed: SHIRT_COUNT === 5
+        ? 0.35 + Math.random() * 0.4
+        : 0.7 + Math.random()
     });
   }
 }
 
 /* =========================
-   LOOP ANIMAZIONE (SAFE)
+   LOOP ANIMAZIONE (DELTA TIME)
 ========================= */
 let animationId = null;
+let lastTime = null;
 
-function animate() {
+function animate(time) {
+  if (!lastTime) lastTime = time;
+  const delta = (time - lastTime) / 16.67;
+  lastTime = time;
+
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   shirts.forEach(s => {
     if (!s.img.complete) return;
+
+    s.y += s.speed * delta;
+
+    if (s.y > canvas.height + 150) {
+      s.y = -200;
+      s.x = Math.random() * canvas.width;
+    }
 
     ctx.drawImage(
       s.img,
@@ -75,45 +96,44 @@ function animate() {
       s.size,
       s.size * 1.25
     );
-
-    s.y += s.speed;
-
-    if (s.y > canvas.height + 100) {
-      s.y = -150;
-      s.x = Math.random() * canvas.width;
-    }
   });
 
   animationId = requestAnimationFrame(animate);
 }
 
 /* =========================
-   START DOPO LOAD
+   START SICURO
 ========================= */
 Promise.all(
-  shirtImages.map(img => new Promise(resolve => {
-    img.onload = resolve;
-  }))
+  shirtImages.map(
+    img =>
+      new Promise(resolve => {
+        img.onload = resolve;
+      })
+  )
 ).then(() => {
   createShirts();
-  animate();
+  animationId = requestAnimationFrame(animate);
 });
 
 /* =========================
-   VISIBILITY FIX (MOBILE)
+   VISIBILITY FIX
 ========================= */
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) {
     cancelAnimationFrame(animationId);
-  } else {
-    animate();
+    animationId = null;
+    lastTime = null;
+  } else if (!animationId) {
+    animationId = requestAnimationFrame(animate);
   }
 });
 
 /* =========================
-   RESIZE / ORIENTATION
+   RESIZE / BREAKPOINT CHANGE
 ========================= */
 window.addEventListener("resize", () => {
   resizeCanvas();
   createShirts();
+  lastTime = null;
 });
