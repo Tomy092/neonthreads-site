@@ -137,3 +137,24 @@ window.addEventListener("resize", () => {
   createShirts();
   lastTime = null;
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const hamburger = document.getElementById("hamburger");
+  const nav = document.getElementById("mainNav");
+
+  if (!hamburger || !nav) {
+    console.error("Hamburger o nav non trovati");
+    return;
+  }
+
+  hamburger.addEventListener("click", () => {
+    nav.classList.toggle("open");
+  });
+
+  /* chiude il menu cliccando un link */
+  nav.querySelectorAll("a").forEach(link => {
+    link.addEventListener("click", () => {
+      nav.classList.remove("open");
+    });
+  });
+});

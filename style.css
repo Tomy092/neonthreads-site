@@ -52,6 +52,8 @@ body {
    HAMBURGER
 ========================= */
 .hamburger {
+  z-index: 1002;      /* sopra canvas e navbar */
+  cursor: pointer;
   display: none;
   flex-direction: column;
   gap: 5px;
