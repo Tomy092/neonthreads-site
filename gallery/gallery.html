@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galleria | NeonThreads</title>
+
+  <!-- FONT -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/gallery.css">
+</head>
+
+<body>
+
+  <!-- NAVBAR (riusa la stessa dell’index) -->
+  <header class="navbar">
+     <a href="index.html" class="logo">
+        <img
+          src="../loghi/logo-template-2.png"
+          alt="NeonThreads – Magliette personalizzate"
+        />
+    </a>
+
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+
+    <nav id="mainNav">
+      <a href="index.html">Home</a>
+      <a href="gallery.html">Galleria</a>
+      <a href="customize/customize.html">Personalizza</a>
+      <a href="#booking" class="cta">Prenota</a>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="gallery-hero">
+    <h1>Galleria Magliette</h1>
+    <p>Scegli il modello e personalizzalo come vuoi</p>
+  </section>
+
+   <!-- FILTRI -->
+<div class="gallery-filters">
+  <button class="filter-btn active" data-filter="all">Tutte</button>
+  <button class="filter-btn" data-filter="white">Bianche</button>
+  <button class="filter-btn" data-filter="black">Nere</button>
+  <button class="filter-btn" data-filter="color">Colorate</button>
+</div>
+
+
+
+  <div class="gallery-grid">
+
+  <div class="gallery-card" data-category="white">
+    <span class="badge new">NEW</span>
+    <img src="immagini/tshirt-bianca.png" alt="T-shirt bianca">
+    <a href="../customize/customize.html">Personalizza</a>
+  </div>
+
+  <div class="gallery-card" data-category="black">
+    <span class="badge hot">HOT</span>
+    <img src="img/gallery/tshirt-black.png" alt="T-shirt nera">
+    <a href="customize/customize.html?type=black">Personalizza</a>
+  </div>
+
+  <div class="gallery-card" data-category="color">
+    <img src="img/gallery/tshirt-red.png" alt="T-shirt colorata">
+    <a href="customize/customize.html?type=color">Personalizza</a>
+  </div>
+
+</div>
+
+
+
+  <script src="gallery.js"></script>
+</body>
+</html>
